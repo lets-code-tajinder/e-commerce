@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 interface Category {
   id: string;
-  category_name: string;
+  categoryName: string;
 }
 
 const LeftSide: React.FC = () => {
@@ -34,9 +34,7 @@ const LeftSide: React.FC = () => {
               to={`/show-products/${result.id}`}
               className="text-decoration-none text-dark"
             >
-              <li className="border-bottom py-2 px-3">
-                {result.category_name}
-              </li>
+              <li className="border-bottom py-2 px-3">{result.categoryName}</li>
             </Link>
           ))}
         </ul>

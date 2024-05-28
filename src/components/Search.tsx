@@ -12,10 +12,10 @@ interface SearchProductsProps {
 
 interface Product {
   id: string;
-  product_image: string;
-  product_quantity: string;
-  product_name: string;
-  product_price: string;
+  productImage: string;
+  productQuantity: string;
+  productName: string;
+  productPrice: string;
 }
 
 const SearchProducts: React.FC<SearchProductsProps> = ({ data = "" }) => {
@@ -54,13 +54,13 @@ const SearchProducts: React.FC<SearchProductsProps> = ({ data = "" }) => {
                     <div className="col-md-10 m-auto mb-5">
                       <img
                         style={{ width: "100%", height: "160px" }}
-                        src={`/images/${result.product_image}`}
+                        src={`/images/${result.productImage}`}
                         alt="no img"
                       />
                     </div>
                     <div className="col-md-10 border m-auto">
                       <p className="p-2 m-0 text-center">
-                        In Stock: {result.product_quantity}
+                        In Stock: {result.productQuantity}
                       </p>
                     </div>
                   </div>
@@ -69,16 +69,16 @@ const SearchProducts: React.FC<SearchProductsProps> = ({ data = "" }) => {
                       Date Added: 2013-06-01 08:05:32
                     </div>
                     <div className="col-md-12 mb-4">
-                      <h4>{result.product_name}</h4>
+                      <h4>{result.productName}</h4>
                     </div>
                     <div className="col-md-12 mb-4">
-                      <p className="p-0 m-0">Model: {result.product_name}</p>
+                      <p className="p-0 m-0">Model: {result.productName}</p>
                       <p className="m-0 p-0">
-                        Manufacturer: {result.product_name}
+                        Manufacturer: {result.productName}
                       </p>
                     </div>
                     <div className="col-md-12 mb-4">
-                      <h2 className="pro_h2">{result.product_price}</h2>
+                      <h2 className="pro_h2">{result.productPrice}</h2>
                     </div>
                     <div className="col-md-12">
                       <Link to={`/buy-products/${result.id}`}>

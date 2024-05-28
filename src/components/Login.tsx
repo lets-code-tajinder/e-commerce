@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
+import { API_URLS } from "../configs/urls";
 
 const Login: React.FC = () => {
   const [fullName, setFullName] = useState<string>("");
@@ -14,12 +15,15 @@ const Login: React.FC = () => {
 
   const addFormData = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const fd = new FormData();
-    fd.append("full_name", fullName);
-    fd.append("email", email);
-    fd.append("password", password);
+
+    const params = {
+      fullName,
+      email,
+      password,
+    };
+
     try {
-      await axios.post("http://localhost/enest/signup.php", fd);
+      await axios.post(API_URLS.SIGN_UP, params);
       setFullName("");
       setEmail("");
       setPassword("");
@@ -30,19 +34,17 @@ const Login: React.FC = () => {
 
   const checkLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const fd = new FormData();
-    fd.append("username", userName);
-    fd.append("userpass", userPass);
+    const params = {
+      email: userName,
+      password: userPass,
+    };
+
     try {
-      const res = await axios.post(
-        "http://localhost/enest1/checklogin.php",
-        fd
-      );
-      console.log(res.data.msg);
+      const res = await axios.post(API_URLS.LOGIN, params);
       setUserName("");
       setUserPass("");
       if (res.data.msg) {
-        localStorage.setItem("uid", res.data.myData[0].id);
+        localStorage.setItem("uid", res?.data.data?._id);
         navigate("/");
       }
     } catch (errors) {
