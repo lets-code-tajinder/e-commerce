@@ -9,9 +9,9 @@ import LeftSide from "./LeftSide";
 
 interface Product {
   id: number;
-  product_name: string;
-  product_price: number;
-  product_image: string;
+  productName: string;
+  productPrice: number;
+  productImage: string;
 }
 
 const Home: React.FC = () => {
@@ -52,10 +52,10 @@ const Home: React.FC = () => {
                     <img
                       style={{ width: "100%", height: "120px" }}
                       alt="no img"
-                      src={`/images/${result.product_image}`}
+                      src={`/images/${result.productImage}`}
                     />
-                    <p className="m-0 pro_p">{result.product_name}</p>
-                    <h2 className="m-0 pro_h2">{result.product_price}</h2>
+                    <p className="m-0 pro_p">{result.productName}</p>
+                    <h2 className="m-0 pro_h2">{result.productPrice}</h2>
                     <hr />
                     <div className="col-md-12 pro_i ps-2">
                       <i
