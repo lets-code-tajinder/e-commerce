@@ -26,7 +26,6 @@ const AllProduct: React.FC = () => {
           const res = await axios.post(API_URLS.GET_PRODUCTS_BY_CATEGORY_ID, {
             id,
           });
-          console.log(res);
           setProductDetail(res.data.data.myData);
           setTitle(res.data.data.title);
         } catch (errors) {
