@@ -1,23 +1,22 @@
 import React, { useState, useEffect } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { Link } from "react-router-dom";
-import Search from "./Search";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Form from "react-bootstrap/Form";
 import FormControl from "react-bootstrap/FormControl";
 import Button from "react-bootstrap/Button";
+import Search from "./Search";
 
 const Header: React.FC = () => {
   const [search, setSearch] = useState<string>("");
   const [searchRedirect, setSearchRedirect] = useState<boolean>(false);
-  const [redirect, setRedirect] = useState<boolean>(false);
+  const [redirect, setRedirect] = useState<boolean>(true);
 
   useEffect(() => {
     if (localStorage.getItem("uid")) {
       // User is logged in
+      setRedirect(false);
     } else {
-      console.log("call user feed");
       setRedirect(true);
     }
   }, []);
@@ -38,7 +37,7 @@ const Header: React.FC = () => {
     <>
       {searchRedirect ? (
         <div>
-          <Search data={search} />
+          <Search />
         </div>
       ) : (
         <div>

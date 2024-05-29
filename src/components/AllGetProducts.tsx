@@ -1,32 +1,30 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useParams } from "react-router-dom";
-
+import { Link } from "react-router-dom";
 import LeftSide from "./LeftSide";
 import { API_URLS } from "../configs/urls";
 
 interface Product {
   id: string;
   productImage: string;
-  productQuantity: string;
+  productQuantity: number;
   productName: string;
   productPrice: string;
 }
 
-const SearchProducts: React.FC = () => {
-  const [searchData, setSearchData] = useState<Product[]>([]);
-  const { name } = useParams();
+const AllGetProduct: React.FC = () => {
+  const [productDetail, setProductDetail] = useState<Product[]>([]);
 
   useEffect(() => {
     axios
-      .post(API_URLS.SEARCH_PRODUCTS, { search: name })
+      .get(API_URLS.GET_ALL_PRODUCTS)
       .then((res) => {
-        setSearchData(res.data.myData);
+        setProductDetail(res.data.data);
       })
       .catch((errors) => {
         console.error(errors);
       });
-  }, [name]);
+  }, []);
 
   return (
     <>
@@ -37,9 +35,9 @@ const SearchProducts: React.FC = () => {
           </div>
           <div className="col-md-8">
             <div className="col-md-12 contact-us py-3 px-3 mb-4">
-              <p>Search Products</p>
+              <p>All Products</p>
             </div>
-            {searchData.map((result) => (
+            {productDetail.map((result) => (
               <div className="col-md-12 pt-3 pb-5 border mb-4" key={result.id}>
                 <div className="row">
                   <div className="col-md-4">
@@ -77,6 +75,7 @@ const SearchProducts: React.FC = () => {
                         <input
                           className="pro_input"
                           type="button"
+                          name=""
                           value="BUY NOW"
                         />
                       </Link>
@@ -92,4 +91,4 @@ const SearchProducts: React.FC = () => {
   );
 };
 
-export default SearchProducts;
+export default AllGetProduct;

@@ -2,10 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-import HomeIng from "../images/16.png";
-import Header from "./Header";
-import Footer from "./Footer";
 import LeftSide from "./LeftSide";
+import { API_URLS } from "../configs/urls";
 
 interface Product {
   id: number;
@@ -19,20 +17,19 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     axios
-      .get<Product[]>("http://localhost/enest1/fetch_product.php")
+      .get(API_URLS.GET_ALL_PRODUCTS)
       .then((res) => {
-        setData(res.data);
+        setData(res.data.data);
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   }, []);
 
   return (
     <>
-      <Header />
       <div className="container">
-        <img className="main_img img1" src={HomeIng} alt="no img" />
+        <img className="main_img img1" src="../images/16.png" alt="no img" />
       </div>
       <div className="container">
         <div className="row">
@@ -46,42 +43,43 @@ const Home: React.FC = () => {
               </div>
             </div>
             <div className="row">
-              {data.map((result) => (
-                <div className="col-md-4 mb-3" key={result.id}>
-                  <div className="col-md-12 border px-2 py-3">
-                    <img
-                      style={{ width: "100%", height: "120px" }}
-                      alt="no img"
-                      src={`/images/${result.productImage}`}
-                    />
-                    <p className="m-0 pro_p">{result.productName}</p>
-                    <h2 className="m-0 pro_h2">{result.productPrice}</h2>
-                    <hr />
-                    <div className="col-md-12 pro_i ps-2">
-                      <i
-                        className="fa fa-plus-circle icon"
-                        aria-hidden="true"
-                      ></i>
-                      <i className="fa fa-plus" aria-hidden="true"></i>
-                      <i className="fa fa-cart-plus" aria-hidden="true"></i>
-                      <Link to={`/buy-products/${result.id}`}>
-                        <input
-                          className="pro_input"
-                          type="submit"
-                          name=""
-                          value="Add to cart"
-                        />
-                      </Link>
+              {data.map((result) => {
+                const img = `./images/${result.productImage}`;
+
+                return (
+                  <div className="col-md-4 mb-3" key={result.id}>
+                    <div className="col-md-12 border px-2 py-3">
+                      <img
+                        style={{ width: "100%", height: "120px" }}
+                        alt="no img"
+                        src={img}
+                      />
+                      <p className="m-0 pro_p">{result.productName}</p>
+                      <h2 className="m-0 pro_h2">{result.productPrice}</h2>
+                      <hr />
+                      <div className="col-md-12 pro_i ps-2">
+                        <i
+                          className="fa fa-plus-circle icon"
+                          aria-hidden="true"
+                        ></i>
+                        <i className="fa fa-plus" aria-hidden="true"></i>
+                        <i className="fa fa-cart-plus" aria-hidden="true"></i>
+                        <Link to={`/buy-products/${result.id}`}>
+                          <input
+                            className="pro_input"
+                            type="submit"
+                            name=""
+                            value="Add to cart"
+                          />
+                        </Link>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
-      </div>
-      <div className="container">
-        <Footer />
       </div>
     </>
   );

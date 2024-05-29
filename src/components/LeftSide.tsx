@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { API_URLS } from "../configs/urls";
 
 interface Category {
   id: string;
@@ -12,12 +13,12 @@ const LeftSide: React.FC = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost/enest1/fetch_category.php")
+      .get(API_URLS.FETCH_CATEGORIES)
       .then((res) => {
         setData(res.data);
       })
       .catch((errors) => {
-        console.log(errors);
+        console.error(errors);
       });
   }, []);
 

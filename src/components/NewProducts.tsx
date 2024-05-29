@@ -1,32 +1,30 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link, useParams } from "react-router-dom";
-
+import { Link } from "react-router-dom";
 import LeftSide from "./LeftSide";
 import { API_URLS } from "../configs/urls";
 
 interface Product {
   id: string;
-  productImage: string;
-  productQuantity: string;
   productName: string;
+  productImage: string;
+  productQuantity: number;
   productPrice: string;
 }
 
-const SearchProducts: React.FC = () => {
-  const [searchData, setSearchData] = useState<Product[]>([]);
-  const { name } = useParams();
+const NewProducts: React.FC = () => {
+  const [productDetail, setProductDetail] = useState<Product[]>([]);
 
   useEffect(() => {
     axios
-      .post(API_URLS.SEARCH_PRODUCTS, { search: name })
+      .get(API_URLS.GET_PRODUCT_DATA)
       .then((res) => {
-        setSearchData(res.data.myData);
+        setProductDetail(res.data.newProduct);
       })
       .catch((errors) => {
         console.error(errors);
       });
-  }, [name]);
+  }, []);
 
   return (
     <>
@@ -37,10 +35,10 @@ const SearchProducts: React.FC = () => {
           </div>
           <div className="col-md-8">
             <div className="col-md-12 contact-us py-3 px-3 mb-4">
-              <p>Search Products</p>
+              <p>New Products</p>
             </div>
-            {searchData.map((result) => (
-              <div className="col-md-12 pt-3 pb-5 border mb-4" key={result.id}>
+            {productDetail.map((result) => (
+              <div key={result.id} className="col-md-12 pt-3 pb-5 border mb-4">
                 <div className="row">
                   <div className="col-md-4">
                     <div className="col-md-10 m-auto mb-5">
@@ -92,4 +90,4 @@ const SearchProducts: React.FC = () => {
   );
 };
 
-export default SearchProducts;
+export default NewProducts;
