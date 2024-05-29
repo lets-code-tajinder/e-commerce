@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 
@@ -8,25 +8,33 @@ import { API_URLS } from "../configs/urls";
 interface Product {
   id: string;
   productImage: string;
-  productQuantity: string;
+  productQuantity: number;
   productName: string;
   productPrice: string;
 }
 
-const SearchProducts: React.FC = () => {
-  const [searchData, setSearchData] = useState<Product[]>([]);
-  const { name } = useParams();
+const AllProduct: React.FC = () => {
+  const { id } = useParams();
+
+  const [productDetail, setProductDetail] = useState<Product[]>([]);
+  const [title, setTitle] = useState<string>("");
 
   useEffect(() => {
-    axios
-      .post(API_URLS.SEARCH_PRODUCTS, { search: name })
-      .then((res) => {
-        setSearchData(res.data.myData);
-      })
-      .catch((errors) => {
-        console.error(errors);
-      });
-  }, [name]);
+    const fetchData = async () => {
+      if (id) {
+        try {
+          const res = await axios.post(API_URLS.GET_PRODUCTS_BY_CATEGORY_ID, {
+            id,
+          });
+          setProductDetail(res.data.data.myData);
+          setTitle(res.data.data.title);
+        } catch (errors) {
+          console.error(errors);
+        }
+      }
+    };
+    fetchData();
+  }, [id]);
 
   return (
     <>
@@ -37,16 +45,16 @@ const SearchProducts: React.FC = () => {
           </div>
           <div className="col-md-8">
             <div className="col-md-12 contact-us py-3 px-3 mb-4">
-              <p>Search Products</p>
+              <p>{title}</p>
             </div>
-            {searchData.map((result) => (
+            {productDetail.map((result) => (
               <div className="col-md-12 pt-3 pb-5 border mb-4" key={result.id}>
                 <div className="row">
                   <div className="col-md-4">
                     <div className="col-md-10 m-auto mb-5">
                       <img
                         style={{ width: "100%", height: "160px" }}
-                        src={`/images/${result.productImage}`}
+                        src={`../images/${result.productImage}`}
                         alt="no img"
                       />
                     </div>
@@ -77,6 +85,7 @@ const SearchProducts: React.FC = () => {
                         <input
                           className="pro_input"
                           type="button"
+                          name=""
                           value="BUY NOW"
                         />
                       </Link>
@@ -92,4 +101,4 @@ const SearchProducts: React.FC = () => {
   );
 };
 
-export default SearchProducts;
+export default AllProduct;

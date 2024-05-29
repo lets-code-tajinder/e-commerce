@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import Header from "./Header";
-import Footer from "./Footer";
 import { API_URLS } from "../configs/urls";
 
 const Login: React.FC = () => {
@@ -28,7 +26,7 @@ const Login: React.FC = () => {
       setEmail("");
       setPassword("");
     } catch (errors) {
-      console.log(errors);
+      console.error(errors);
     }
   };
 
@@ -44,17 +42,16 @@ const Login: React.FC = () => {
       setUserName("");
       setUserPass("");
       if (res.data.msg) {
-        localStorage.setItem("uid", res?.data.data?._id);
+        localStorage.setItem("uid", res?.data.data.id);
         navigate("/");
       }
     } catch (errors) {
-      console.log(errors);
+      console.error(errors);
     }
   };
 
   return (
     <>
-      <Header />
       <div className="container my-3">
         <div className="row">
           <div className="col-md-3"></div>
@@ -181,9 +178,6 @@ const Login: React.FC = () => {
             </form>
           </div>
         </div>
-      </div>
-      <div className="container">
-        <Footer />
       </div>
     </>
   );
