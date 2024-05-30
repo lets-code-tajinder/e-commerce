@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { API_URLS } from "../configs/urls";
+import { httpPost } from "../utils/http";
 
 const Login: React.FC = () => {
   const [fullName, setFullName] = useState<string>("");
@@ -21,7 +21,7 @@ const Login: React.FC = () => {
     };
 
     try {
-      await axios.post(API_URLS.SIGN_UP, params);
+      await httpPost(API_URLS.SIGN_UP, params);
       setFullName("");
       setEmail("");
       setPassword("");
@@ -38,11 +38,12 @@ const Login: React.FC = () => {
     };
 
     try {
-      const res = await axios.post(API_URLS.LOGIN, params);
+      const res = await httpPost(API_URLS.LOGIN, params);
+
       setUserName("");
       setUserPass("");
-      if (res.data.msg) {
-        localStorage.setItem("uid", res?.data.data.id);
+      if (res.msg) {
+        localStorage.setItem("uid", res?.data.id);
         navigate("/");
       }
     } catch (errors) {

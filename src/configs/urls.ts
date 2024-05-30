@@ -1,5 +1,5 @@
 // Define your base URL
-const BASE_URL = "http://127.0.0.1:8080/api";
+export const BASE_URL = "http://127.0.0.1:8080/api";
 
 // Define your URL configuration
 export const API_URLS = {

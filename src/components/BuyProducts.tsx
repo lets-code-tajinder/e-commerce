@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import axios from "axios";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import LeftSide from "./LeftSide";
 import { API_URLS } from "../configs/urls";
+import { httpPost } from "../utils/http";
 
 interface Product {
   id: string;
@@ -22,30 +22,30 @@ const BuyProducts: React.FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const inputUidRef = useRef<HTMLInputElement>(null);
 
+  const getProductDetails = async () => {
+    const params = {
+      productId: Number(id),
+    };
+
+    try {
+      const res = await httpPost(API_URLS.GET_PRODUCT_BY_ID, params);
+      setProductDetail(res.myData);
+    } catch (errors) {
+      console.error(errors);
+    }
+  };
+
   useEffect(() => {
     const session = localStorage.getItem("uid");
     if (session) {
       setUid(session);
     }
 
-    const params = {
-      productId: Number(id),
-    };
-
     if (id) {
-      axios
-        .post(API_URLS.GET_PRODUCT_BY_ID, params)
-        .then((res) => {
-          setProductDetail(res.data.myData);
-          if (res.data.myData.length > 0) {
-            setPid(res.data.myData[0].id);
-          }
-        })
-        .catch((errors) => {
-          console.error(errors);
-        });
+      getProductDetails();
     }
-  }, [id]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const addFormData = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -57,7 +57,7 @@ const BuyProducts: React.FC = () => {
     };
 
     try {
-      await axios.post(API_URLS.ADD_TO_CART, params);
+      await httpPost(API_URLS.ADD_TO_CART, params);
       setPid("");
       setUid("");
       setQty("");

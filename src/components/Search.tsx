@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 
 import LeftSide from "./LeftSide";
 import { API_URLS } from "../configs/urls";
+import { httpPost } from "../utils/http";
 
 interface Product {
   id: string;
@@ -17,16 +17,19 @@ const SearchProducts: React.FC = () => {
   const [searchData, setSearchData] = useState<Product[]>([]);
   const { name } = useParams();
 
+  const searchProducts = async () => {
+    try {
+      const res = await httpPost(API_URLS.SEARCH_PRODUCTS, { search: name });
+      setSearchData(res.myData);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
-    axios
-      .post(API_URLS.SEARCH_PRODUCTS, { search: name })
-      .then((res) => {
-        setSearchData(res.data.myData);
-      })
-      .catch((errors) => {
-        console.error(errors);
-      });
-  }, [name]);
+    searchProducts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>

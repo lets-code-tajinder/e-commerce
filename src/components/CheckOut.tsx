@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import LeftSide from "./LeftSide";
 import { API_URLS } from "../configs/urls";
+import { httpPost } from "../utils/http";
 
 interface CartItem {
   id: string;
@@ -13,18 +13,20 @@ interface CartItem {
 const CheckOut: React.FC = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
-  useEffect(() => {
+  const getCartData = async () => {
     const session = localStorage.getItem("uid");
     if (session) {
-      axios
-        .post(API_URLS.GET_CART_DATA, { userId: session })
-        .then((res) => {
-          setCartItems(res.data.myData);
-        })
-        .catch((errors) => {
-          console.error(errors);
-        });
+      try {
+        const res = await httpPost(API_URLS.GET_CART_DATA, { userId: session });
+        setCartItems(res.myData);
+      } catch (error) {
+        console.error(error);
+      }
     }
+  };
+
+  useEffect(() => {
+    getCartData();
   }, []);
 
   return (

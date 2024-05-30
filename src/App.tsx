@@ -5,6 +5,9 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
+
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Home from "./components/Home";
 import Header from "./components/Header";
@@ -23,6 +26,7 @@ import "./css/style.css";
 const App: React.FC = () => {
   return (
     <Router>
+      <ToastContainer />
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
