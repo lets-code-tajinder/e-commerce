@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { Link } from "react-router-dom";
 import { API_URLS } from "../configs/urls";
+import { httpGet } from "../utils/http";
 
 interface Category {
   id: string;
@@ -11,15 +11,18 @@ interface Category {
 const LeftSide: React.FC = () => {
   const [data, setData] = useState<Category[]>([]);
 
+  const fetchCategories = async () => {
+    try {
+      const response = await httpGet(API_URLS.FETCH_CATEGORIES);
+
+      setData(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
-    axios
-      .get(API_URLS.FETCH_CATEGORIES)
-      .then((res) => {
-        setData(res.data);
-      })
-      .catch((errors) => {
-        console.error(errors);
-      });
+    fetchCategories();
   }, []);
 
   return (

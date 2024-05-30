@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { Link } from "react-router-dom";
 import LeftSide from "./LeftSide";
 import { API_URLS } from "../configs/urls";
+import { httpGet } from "../utils/http";
 
 interface Product {
   id: string;
@@ -15,15 +15,17 @@ interface Product {
 const SpecialProducts: React.FC = () => {
   const [productDetail, setProductDetail] = useState<Product[]>([]);
 
+  const getSpecialProducts = async () => {
+    try {
+      const res = await httpGet(API_URLS.GET_PRODUCT_DATA);
+      setProductDetail(res.special);
+    } catch (errors) {
+      console.error(errors);
+    }
+  };
+
   useEffect(() => {
-    axios
-      .get(API_URLS.GET_PRODUCT_DATA)
-      .then((res) => {
-        setProductDetail(res.data.special);
-      })
-      .catch((errors) => {
-        console.error(errors);
-      });
+    getSpecialProducts();
   }, []);
 
   return (

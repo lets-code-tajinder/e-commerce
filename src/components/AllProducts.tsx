@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 
 import LeftSide from "./LeftSide";
 import { API_URLS } from "../configs/urls";
+import { httpPost } from "../utils/http";
 
 interface Product {
   id: string;
@@ -23,10 +23,10 @@ const AllProduct: React.FC = () => {
     const fetchData = async () => {
       if (id) {
         try {
-          const res = await axios.post(API_URLS.GET_PRODUCTS_BY_CATEGORY_ID, {
+          const res = await httpPost(API_URLS.GET_PRODUCTS_BY_CATEGORY_ID, {
             id,
           });
-          setProductDetail(res.data.data.myData);
+          setProductDetail(res.data.myData);
           setTitle(res.data.data.title);
         } catch (errors) {
           console.error(errors);

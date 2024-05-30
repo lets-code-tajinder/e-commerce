@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import axios from "axios";
 import LeftSide from "./LeftSide";
 import { API_URLS } from "../configs/urls";
+import { httpPost } from "../utils/http";
 
 const Contact: React.FC = () => {
   const [fullName, setFullName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [message, setMessage] = useState<string>("");
 
-  const addForm = (e: React.FormEvent<HTMLFormElement>) => {
+  const addForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const params = {
       fullName,
@@ -16,16 +16,13 @@ const Contact: React.FC = () => {
       message,
     };
 
-    axios
-      .post(API_URLS.CONTACT_US, params)
-      .then((res) => {
-        setFullName("");
-        setEmail("");
-        setMessage("");
-      })
-      .catch((errors) => {
-        console.error(errors);
-      });
+    const res = await httpPost(API_URLS.CONTACT_US, params);
+
+    if (res.msg) {
+      setFullName("");
+      setEmail("");
+      setMessage("");
+    }
   };
 
   return (

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { Link } from "react-router-dom";
 
 import LeftSide from "./LeftSide";
 import { API_URLS } from "../configs/urls";
+import { httpGet } from "../utils/http";
 
 interface Product {
   id: number;
@@ -15,15 +15,18 @@ interface Product {
 const Home: React.FC = () => {
   const [data, setData] = useState<Product[]>([]);
 
+  const getAllProducts = async () => {
+    try {
+      const response = await httpGet(API_URLS.GET_ALL_PRODUCTS);
+
+      setData(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
-    axios
-      .get(API_URLS.GET_ALL_PRODUCTS)
-      .then((res) => {
-        setData(res.data.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    getAllProducts();
   }, []);
 
   return (
