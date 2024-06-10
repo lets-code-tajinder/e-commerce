@@ -14,4 +14,6 @@ export const API_URLS = {
   ADD_TO_CART: `${BASE_URL}/addToCart`,
   GET_CART_DATA: `${BASE_URL}/getCartData`,
   CONTACT_US: `${BASE_URL}/contactUs`,
+  UPLOAD_IMAGE: `${BASE_URL}/uploadImage`,
+  ADD_PRODUCT: `${BASE_URL}/addProduct`,
 };

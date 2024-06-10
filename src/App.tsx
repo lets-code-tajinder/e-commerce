@@ -4,6 +4,7 @@ import {
   Route,
   Routes,
   Navigate,
+  useLocation,
 } from "react-router-dom";
 
 import { ToastContainer } from "react-toastify";
@@ -21,13 +22,17 @@ import AllGetProducts from "./components/AllGetProducts";
 import Contact from "./components/Contact";
 import CheckOut from "./components/CheckOut";
 import Search from "./components/Search";
+import AdminPanel from "./views/AdminPenal";
 import "./css/style.css";
 
 const App: React.FC = () => {
+  const location = useLocation();
+  const isAdminRoute = location.pathname === "/admin";
+
   return (
-    <Router>
+    <>
       <ToastContainer />
-      <Header />
+      {!isAdminRoute && <Header />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/create-account" element={<LogIn />} />
@@ -36,21 +41,28 @@ const App: React.FC = () => {
         <Route path="/all-products" element={<AllGetProducts />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/checkout" element={<CheckOut />} />
-
         <Route path="/show-products/:id" element={<AllProducts />} />
-
         <Route path="/buy-products/:id" element={<BuyProducts />} />
-
         <Route path="/search-products/:name" element={<Search />} />
-
+        <Route path="/admin" element={<AdminPanel />} />
         {/* Redirect to Home if no matching route */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
-      <div className="container">
-        <Footer />
-      </div>
+      {!isAdminRoute && (
+        <div className="container">
+          <Footer />
+        </div>
+      )}
+    </>
+  );
+};
+
+const WrappedApp: React.FC = () => {
+  return (
+    <Router>
+      <App />
     </Router>
   );
 };
 
-export default App;
+export default WrappedApp;
