@@ -248,7 +248,7 @@ export const httpHandleError = (
           break;
 
         case 404:
-          showErrorSnack(err.detail);
+          showErrorSnack(err.error);
           break;
         case 400:
           const errorMessage: string[] = Object.values(err).reduce(
