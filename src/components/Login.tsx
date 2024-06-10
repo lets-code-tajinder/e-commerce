@@ -22,6 +22,7 @@ const Login: React.FC = () => {
 
     try {
       await httpPost(API_URLS.SIGN_UP, params);
+
       setFullName("");
       setEmail("");
       setPassword("");
